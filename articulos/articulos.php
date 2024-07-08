@@ -3,23 +3,22 @@ include "./lib_articulos.php";
 $opciones = $_GET["accion"];
 
 if ($opciones == "guardar") {
-    guardar();
+    if (isset($_POST["actualizar"])) {
+        Actualizar();
+}
+    else {
+        if (!$_GET["id"]) {
+        Guardar();
+        }
+    }
+
+    
+}
+if($opciones == "eliminar"){
+    Eliminar();
 }
 
-if ($opciones == "ver") {
-    Ver();
-}
-if ($opciones == "eliminar") {
-    Eliminar();
-    # code...
-}
-if ($opciones == "modificar") {
-    Editar();
-    # code...
-}
-if($opciones == "actualizar"){
-    Actualizar();
-}
+
 
 ?>
    

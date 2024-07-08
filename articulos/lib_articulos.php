@@ -1,11 +1,30 @@
+<script>
+    function Ocultar(){
+
+// guardo el valor de id en la variable miBoton
+const boton1 = document.getElementById("Boton");
+// guardo el valor de id en la variable boton2
+const boton2 = document.getElementById("boton2");
+
+// si el boton1 es clickeado se oculta el boton2
+
+boton1.addEventListener("click", () => {
+  boton2.style.display = "none";
+  console.log("hola");
+});
+document.getElementById("boton2").style.display = "none";
+
+
+}
+</script>
 <?php
 
 
-
-
-function Guardar(){
+function Guardar()
+{
 
     if (!empty($_POST["name"]) and !empty($_POST["marca"])) {
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $array = [
                 'nombre' => $_POST["name"],
@@ -14,117 +33,147 @@ function Guardar(){
             include "../conexion.php";
 
             $conexion = Conexion();
-            
-            
-            $query = pg_query($conexion, "INSERT INTO articulos (nombre,marca) VALUES ('" . pg_escape_string($_POST['name']) . "','" . pg_escape_string($_POST['marca']) . "' )");
-            
+
+
+            $query = pg_query($conexion, "INSERT INTO articulos (nombre,marca) VALUES ('" . pg_escape_string($array['nombre']) . "','" . pg_escape_string($array['marca']) . "' )");
+
             if ($query) {
                 header("Location: ../index.php");
-            }
-            else {
+            } else {
                 if (!$query) {
                     echo "error";
                 }
             }
         }
-        
-        
-    }
-    else {
+    } else {
         echo "campos vacios";
     }
-    
+}
+
+function Formulario(){
+    $html = <<<HTML
+    <form class="formulario" action="./articulos/articulos.php?accion=guardar" method="post">
+        <input class="texto" type="text"  id="nombre" name="name" placeholder="name">
+        <input class="texto" type="text"  id="marca" name="marca" placeholder="marca">
+        <input type="hidden" name="id_arti" id="id_arti">
+        <input id="boton2" class="guardar" type="submit" name="submit" value="guardar">
+        <input type="submit" name="actualizar" value="actualizar">
+
+    </form>
+
+HTML;
+echo $html;
+}
+
+function Ver()
+{
+    include_once "./conexion.php";
+    $conexion = Conexion();
+    $query = "SELECT * FROM articulos";
+    $consulta = pg_query($conexion, $query);
+    if (pg_num_rows($consulta) == 0) {
+        echo "No hay registros";
     }
 
-    
-function Ver(){
+    if (pg_num_rows($consulta) > 0) {
+        $html = <<<HTML
+        <table class="tabla">
+        <thead class="cabezera">
+            <tr>
+                <th>id</th>
+                <th>nombre</th>
+                <th>marca</th>
+                <th>eliminar</th>
+                <th>modificar</th>
+            </tr>
+        </thead>
+            <tbody>
+HTML;
+        while ($item = pg_fetch_object($consulta)) {
+            $id = $item->id_arti;
+            $nombre = $item->nombre;
+            $marca = $item->marca;
+
+            $html .= <<<HTML
+            <tr>
+            <td>$id </td>
+            <td>$nombre</td>
+            <td>$marca</td>
+            <td><a onclick="return Preguntas()" href="./articulos/articulos.php?accion=eliminar&id=  $id">Eliminar</a></td>
+
+            <td id="$id">
+                    <input type="hidden" name="id" value="$id" id="id$id">
+                    <input type="hidden" name="nombre" value="$nombre" id="nombre$id">
+                    <input type="hidden" name="marca" value="$marca" id="marca$id">
+                    <button onclick="Hola($id)" id="Boton" onclick="Ocultar()" id="miBoton">prueba</button>
+                <button class="" onclick="Ocultar()" >modificar</button>
+            </td>
+            </tr>
+
+HTML;
+        }
+        $html .= <<<HTML
+        </tbody>
+        </table>
+HTML;
+        echo $html;
+    } else {
+        echo "Error: No se pudo realizar la consulta";
+    }
+    Cerrar($conexion);
+}
+
+function Eliminar()
+{
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
         include_once "../conexion.php";
         $conexion = Conexion();
-        $query = "SELECT * FROM articulos";
+        $query = "DELETE FROM articulos WHERE id_arti = $id";
         $consulta = pg_query($conexion, $query);
         if ($consulta) {
-
-            while ($item = pg_fetch_object($consulta)) {
-                echo "<br>" . $item->id_arti . " " . $item->nombre . " " . $item->marca . "<a href='./articulos.php?accion=eliminar&id=" . $item->id_arti . "  '>Eliminar</a>" . "<a href='./articulos.php?accion=modificar&id=" . $item->id_arti . "'>Modificar</a>";
-
-        }
-
-        //
-        }
-        else {
+            header("Location: ../index.php");
+        } else {
             echo "Error: No se pudo realizar la consulta";
         }
         Cerrar($conexion);
-
     }
-
-    function Editar(){
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            include_once "../conexion.php";
-            $conexion = Conexion();
-            $query = "SELECT * FROM articulos WHERE id_arti = $id";
-            $consulta = pg_query($conexion, $query);
-            if ($consulta) {
-                $$item = pg_fetch_object($consulta);
-                echo "<form action='./articulos.php?accion=actualizar' method='post'>";
-                echo "<input type='text' name='name' value='" . $$item->nombre . "'>";
-                echo "<input type='text' name='marca' value='" . $$item->marca . "'>";
-                echo "<input type='hidden' name='id' value='" . $$item->id_arti . "'>";
-                echo "<input type='submit' name='actualizar' value='modificar'>";
-                echo "</form>";
-
-
-            }
-            else {
-                echo "Error: No se pudo realizar la consulta";
-            }
-            Cerrar($conexion);
-        }
-    }
-
-    function Actualizar(){
+}
+function Actualizar()
+{
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+    if (!empty($_POST["name"]) and !empty($_POST["marca"])) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $array = [
-                'nombre' => $_POST["name"],
-                'marca' => $_POST["marca"],
-                'id' => $_POST["id"]
+
+            $datos = [
+                "nombre" => $_POST["name"],
+                "marca" => $_POST["marca"],
+                "id" => $_REQUEST["id_arti"]
             ];
+
+            /*$nombre = $_POST["name"];
+            $marca = $_POST["marca"];
+            $id = $_REQUEST["id_arti"];*/
+
             include "../conexion.php";
 
             $conexion = Conexion();
-            
-            
-            $query = pg_query($conexion, "UPDATE articulos SET nombre = '" . pg_escape_string($_POST['name']) . "', marca = '" . pg_escape_string($_POST['marca']) . "' WHERE id_arti = " . $_POST['id']);
-            
-            if ($query) {
-                header("Location: ./articulos.php?accion=ver");
-            }
-            else {
-                if (!$query) {
+
+
+            $query = "UPDATE articulos SET nombre='[nombre]', marca='$marca'
+                WHERE id_arti=$id";
+
+            $consulta = pg_query($conexion, $query);
+
+            if ($consulta) {
+                header("Location: ../index.php");
+            } else {
+                if (!$consulta) {
                     echo "error";
                 }
             }
         }
     }
-    
-function Eliminar(){
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            include_once "../conexion.php";
-            $conexion = Conexion();
-            $query = "DELETE FROM articulos WHERE id_arti = $id";
-            $consulta = pg_query($conexion, $query);
-            if ($consulta) {
-                header("Location: ./articulos.php?accion=ver");
-            }
-            else {
-                echo "Error: No se pudo realizar la consulta";
-            }
-            Cerrar($conexion);
-        }
-    }
-
-
-
-?>
+}

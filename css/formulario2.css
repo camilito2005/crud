@@ -3,11 +3,11 @@
     margin: 0;
     box-sizing: border-box;
 }
-h2{
+.titulo{
     text-align: center;
     margin: 20px 0;
 }
-form{
+.formulario{
     width: 100%;
     max-width: 600px;
     margin: 0 auto;
@@ -15,15 +15,39 @@ form{
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-input, textarea{
+.texto{
     width: 100%;
     margin-bottom: 20px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-.boton{
+.guardar{
     background-color: #333;
     color: #fff;
     cursor: pointer;
+}
+.tabla{
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+
+}
+.cabezera{
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+}
+tr{
+    border-bottom: 1px solid #ccc;
+}
+th{
+    padding: 10px;
+}
+.cuerpo{
+    text-align: center;
+}
+a{
+    color: #333;
+    text-decoration: none;
 }
