@@ -151,7 +151,7 @@ HTML;*/
 HTML;
         echo $html;*/
     } else {
-        echo "Error: No se pudo realizar la consulta";
+        echo "error: No se pudo realizar la consulta";
     }
     Cerrar($conexion);
 }
