@@ -5,8 +5,8 @@ function conexion(){
     $host ="127.0.0.1";  //  localhost 127.0.0.1 165.232.121.46 
     $port = "5432";
     $dbname = "bdr";
-    $user = "admin";
-    $password = "admin";
+    $user = "postgres";
+    $password = "camilo";
 
     $conexion = pg_connect("host=$host port=$port dbname=$dbname user= $user password=$password");
 

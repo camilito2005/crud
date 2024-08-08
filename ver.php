@@ -6,7 +6,9 @@ error_reporting(E_ALL);
 
 include_once "./conexion.php";
 $conexion = Conexion();
-$query = "SELECT * FROM articulos";
+$query = <<<SQL
+"SELECT * FROM articulos";
+SQL;
 $consulta = pg_query($conexion, $query);
 
 if (pg_num_rows($consulta) == 0) {

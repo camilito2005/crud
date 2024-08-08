@@ -6,7 +6,9 @@ $id = $_REQUEST["id_arti"];
 include_once "./conexion.php";
         $conexion = Conexion();
 
-        $query = "SELECT id_arti,nombre,marca FROM articulos WHERE id_arti=$id";
+        $query = <<<SQL
+        "SELECT id_arti,nombre,marca FROM articulos WHERE id_arti=$id";
+SQL;
 
         $consulta = pg_query($conexion, $query);
 

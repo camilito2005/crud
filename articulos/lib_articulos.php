@@ -13,7 +13,9 @@ function Buscar($search)
 
         include_once "../conexion.php";
         $conexion = Conexion();
-        $query = "SELECT id_arti,nombre,marca FROM articulos WHERE nombre LIKE '%$search%'";
+        $query = <<<SQL
+        "SELECT id_arti,nombre,marca FROM articulos WHERE nombre LIKE '%$search%'";
+SQL;
         $consulta = pg_query($conexion, $query);
         if (pg_num_rows($consulta) == 0) {
             echo "No se encontraron resultados";
@@ -84,11 +86,12 @@ HTML;
     echo $html;
 }
 
-function Ver()
-{
+function Ver(){
     include_once "./conexion.php";
     $conexion = Conexion();
-    $query = "SELECT id_arti,nombre,marca FROM articulos";
+    $query = <<<SQL
+    "SELECT id_arti,nombre,marca FROM articulos";
+SQL;
     $consulta = pg_query($conexion, $query);
     if (pg_num_rows($consulta) == 0) {
         echo "No hay registros";
@@ -159,7 +162,9 @@ function Eliminar($id)
         $id = $_GET['id'];
         include_once "../conexion.php";
         $conexion = Conexion();
-        $query = "DELETE FROM articulos WHERE id_arti = $id";
+        $query = <<<SQL
+        "DELETE FROM articulos WHERE id_arti = $id";
+SQL;
         $consulta = pg_query($conexion, $query);
         if ($consulta) {
             header("Location: ../index.php");
@@ -188,8 +193,10 @@ function Actualizar()
             $conexion = Conexion();
 
 
-            $query = "UPDATE articulos SET nombre='$nombre', marca='$marca'
+            $query = <<<SQL
+            "UPDATE articulos SET nombre='$nombre', marca='$marca'
                 WHERE id_arti=$id";
+SQL;
 
             $consulta = pg_query($conexion, $query);
 
