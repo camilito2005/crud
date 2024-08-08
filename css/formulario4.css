@@ -1,0 +1,92 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.titulo{
+    text-align: center;
+    margin: 20px 0;
+}
+.formulario{
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.texto{
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.guardar{
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+.tabla{
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+
+}
+.cabezera{
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+}
+td, th{
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+button{
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+
+}
+
+input[type="submit"]{
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+a{
+    color: #333;
+    text-decoration: none;
+}
+.navv{
+    width: 100%;
+    background-color: #333;
+    padding: 10px 0;
+    text-align: center;
+}
+.lin{
+    color: #fff;
+    text-decoration: none;
+}
+.formu-buscar{
+    display: inline;
+}
+.buscar{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.enviar{
+    background-color: #307b1a;
+    color: #fff;
+    cursor: pointer;
+}
