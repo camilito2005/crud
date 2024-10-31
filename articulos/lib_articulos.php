@@ -14,7 +14,7 @@ function Buscar($search)
         include_once "../conexion.php";
         $conexion = Conexion();
         $query = <<<SQL
-        "SELECT id_arti,nombre,marca FROM articulos WHERE nombre LIKE '%$search%'";
+        SELECT id_arti,nombre,marca FROM articulos WHERE nombre LIKE '%$search%';
 SQL;
         $consulta = pg_query($conexion, $query);
         if (pg_num_rows($consulta) == 0) {
